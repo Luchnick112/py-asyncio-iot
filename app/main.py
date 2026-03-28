@@ -44,14 +44,15 @@ async def main() -> None:
 
     print("=====RUNNING SLEEP PROGRAM======")
 
-    await run_sequence(
-        run_parallel(
+    await run_parallel(
             service.send_msg(Message(hue_light_id, MessageType.SWITCH_OFF)),
             service.send_msg(Message(speaker_id, MessageType.SWITCH_OFF)),
-        ),
-            service.send_msg(Message(toilet_id, MessageType.FLUSH)),
-            service.send_msg(Message(toilet_id, MessageType.CLEAN)),
-        )
+            run_sequence(
+                service.send_msg(Message(toilet_id, MessageType.FLUSH)),
+                service.send_msg(Message(toilet_id, MessageType.CLEAN)),
+            )
+    )
+
     print("=====END OF SLEEP PROGRAM======")
 
 
